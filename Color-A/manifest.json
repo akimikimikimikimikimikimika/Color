@@ -1,0 +1,17 @@
+{
+    "short_name":"A",
+    "name":"Color A",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color A (H=0° S>0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#E61919",
+    "theme_color":"#E61919"
+}

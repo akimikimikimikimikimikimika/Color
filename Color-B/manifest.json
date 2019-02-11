@@ -1,0 +1,17 @@
+{
+    "short_name":"B",
+    "name":"Color B",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color B (H=20° S>0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#E65E19",
+    "theme_color":"#E65E19"
+}

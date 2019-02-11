@@ -1,0 +1,17 @@
+{
+    "short_name":"E",
+    "name":"Color E",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color E (H=80° S>0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#A2E619",
+    "theme_color":"#A2E619"
+}

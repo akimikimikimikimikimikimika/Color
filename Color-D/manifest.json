@@ -1,0 +1,17 @@
+{
+    "short_name":"D",
+    "name":"Color D",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color D (H=60° S>0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#E6E619",
+    "theme_color":"#E6E619"
+}
