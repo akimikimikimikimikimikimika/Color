@@ -1,0 +1,17 @@
+{
+    "short_name":"S",
+    "name":"Color S",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color S (H=?° S=0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#808080",
+    "theme_color":"#808080"
+}

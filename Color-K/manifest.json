@@ -1,0 +1,17 @@
+{
+    "short_name":"K",
+    "name":"Color K",
+    "icons":[
+        {
+            "src":"Icon.png",
+            "type":"image/png",
+            "sizes":"192x192"
+        }
+    ],
+    "lang":"ja-JP",
+    "description":"Color K (H=200° S>0) のサンプルです",
+    "display":"standalone",
+    "start_url":"?standalone=yes",
+    "background_color":"#19A2E6",
+    "theme_color":"#19A2E6"
+}
