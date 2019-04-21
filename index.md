@@ -39,7 +39,8 @@ LightとDarkは背景色の値で表示している。
 - iPhone X 対応。
 
 ### 更新内容
-- ソースコードを整えた。
+- Faviconを更新。
+- OGP画像を追加。
 
 ### 開く
 
@@ -67,7 +68,7 @@ LightとDarkは背景色の値で表示している。
 | [T](https://akimikimikimikimikimikimika.github.io/Color/Color-T/ "Color T オンライン版") | [T](https://akimikimikimikimikimikimika.github.io/Color/Color-T/offline.html "Color T オフライン版") |
 
 ### ソースコード
-[ソースコード (GitHub)](https://github.com/akimikimikimikimikimikimika/Color/ "ソースコード")
+ [ソースコード (GitHub)](https://github.com/akimikimikimikimikimikimika/Color/ "ソースコード")
 
 オンライン版では,全てのコンテンツを組み込み,常に最新の状態で利用できます。  
 オフライン版では,オンライン版と同じ体験をオフラインでもできるようにします。URLのdataスキームに全てのソースコードを埋め込んでいるので,一部コンテンツに制限があります。
