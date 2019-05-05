@@ -1,10 +1,5 @@
 
 .DS_Store
-Build
-Color-*/0.svg
-Color-*/1.svg
-Color-*/2.svg
-Color-*/3.svg
-Color-*/4.svg
-Color-*/Favicon.svg
-Color-*/mini.png
+Build/Build
+Build/Resources/inkscape
+Build/Resources/.tmp

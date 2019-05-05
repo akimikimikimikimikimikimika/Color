@@ -9,7 +9,7 @@
 		}
 	],
 	"lang":"ja-JP",
-	"description":"Color S (H=0°, S=0) のサンプルです",
+	"description":"Color S (S=0) のサンプルです",
 	"display":"standalone",
 	"start_url":"?standalone=yes",
 	"background_color":"#808080",
