@@ -31,6 +31,9 @@ LightとDarkは背景色の値で表示している。
 |   R   | `hsl(340,80%,50%)` | `hsl(340,80%,95%)` | `hsl(340,80%,15%)` |
 |   S   |    `hsl(0,0%,50%)` |    `hsl(0,0%,95%)` |    `hsl(0,0%,15%)` |
 
+### ビルド
+Colorのページを書き出すことができる。詳しくは[こちら](https://github.com/akimikimikimikimikimikimika/Color/blob/master/Build/README.md "ビルド")。
+
 ### 特記事項
 - Android版ChromeやVivaldiでは,上部バーの色が変化する。
 - アイコンは通常のアイコンとapple-touch-icon,Windowsタイルに対応。
@@ -41,6 +44,7 @@ LightとDarkは背景色の値で表示している。
 ### 更新内容
 - Faviconを更新。
 - OGP画像を追加。
+- ビルドシステムの公開。
 
 ### 開く
 
