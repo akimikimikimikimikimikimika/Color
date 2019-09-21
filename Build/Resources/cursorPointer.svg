@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 220 220">
+	<path d="M 10,120 v 10 h 10 v -10 h -10 M 10,100 h 20 v -10 h -30 v 30 h 10 v -20 M 40,20 v 80 h -10 v 10 h 10 v 10 h 10 v -110 h -10 v 10 M 60,0 h -10 v 10 h 20 v -10 h -10 M 90,50 h -10 v -40 h -10 v 90 h 10 v -40 h 20 v -10 h -10 M 120,60 h -20 v 40 h 10 v -30 h 20 v -10 h -10 M 160,90 v 70 h 10 v -70 h -10 M 150,80 v 10 h 10 v -10 h -10 M 140,70 h -10 v 40 h 10 v -30 h 10 v -10 h -10 M 30,130 h -10 v 20 h 10 v -20 M 40,150 h -10 v 20 h 10 v -20 M 50,170 h -10 v 20 h 10 v -20 M 140,200 v 10 h -80 v -20 h -10 v 30 h 100 v -30 h -10 v 10 M 150,170 v 20 h 10 v -30 h -10 v 10" fill="hsl($hue,100%)" />
+	<path d="M 150,90 v -10 h -10 v 30 h -10 v -40 h -20 v 30 h -10 v -40 h -20 v 40 h -10 v -90 h -20 v 110 h -10 v -10 h -10 v -10 h -20 v 20 h 10 v 10 h 10 v 20 h 10 v 20 h 10 v 20 h 10 v 20 h 80 v -20 h 10 v -30 h 10 v -70 h -10" fill="hsl($hue,40%)" />
+</svg>

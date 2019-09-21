@@ -1,0 +1,26 @@
+html{
+    background-color:$color;
+    background-image:radial-gradient(circle,rgba(255,255,255,1) 0vmin 0vmin,rgba(255,255,255,0) 50vmin 50vmin),conic-gradient(from 90deg,
+        hsl(360,80%,50%) 000deg,
+        hsl(340,80%,50%) 020deg,
+        hsl(320,80%,50%) 040deg,
+        hsl(300,80%,50%) 060deg,
+        hsl(280,80%,50%) 080deg,
+        hsl(260,80%,50%) 100deg,
+        hsl(240,80%,50%) 120deg,
+        hsl(220,80%,50%) 140deg,
+        hsl(200,80%,50%) 160deg,
+        hsl(180,80%,50%) 180deg,
+        hsl(160,80%,50%) 200deg,
+        hsl(140,80%,50%) 220deg,
+        hsl(120,80%,50%) 240deg,
+        hsl(100,80%,50%) 260deg,
+        hsl(080,80%,50%) 280deg,
+        hsl(060,80%,50%) 300deg,
+        hsl(040,80%,50%) 320deg,
+        hsl(020,80%,50%) 340deg,
+        hsl(000,80%,50%) 360deg
+    );
+    width:100%;
+    height:100%;
+}

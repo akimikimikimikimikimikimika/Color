@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover" />
+		<meta name="format-detection" content="telephone=no,email=no,address=no" />
+		<meta name="referrer" content="never" />
+		<meta name="referrer" content="no-referrer" />
+		<meta name="application-name" content="Ring" />
+		<meta name="apple-mobile-web-app-title" content="Ring" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<title>Color Ring</title>
+		<style type="text/css">
+			*{
+				cursor:default;
+				user-select:none;
+				-webkit-user-select:none;
+				-moz-user-select:none;
+			}
+			html{
+				background-color:#ffffff;
+				width:100vw;
+				height:100vh;
+			}
+			body{
+				margin:0px;
+				padding:0px;
+				position:fixed;
+				left:0px;
+				right:0px;
+				top:0px;
+				bottom:0px;
+			}
+			#background{
+				--margin-hr:calc( 50vw - 50vh );
+				--margin-vt:calc( 50vh - 50vw );
+				position:absolute;
+				left:var(--margin-hr);
+				right:var(--margin-hr);
+				top:var(--margin-vt);
+				bottom:var(--margin-vt);
+				background-image:radial-gradient(circle,rgba(255,255,255,1) 0vmin 0vmin,rgba(255,255,255,0) 50vmin 50vmin),conic-gradient(from 90deg,
+					hsl(360,80%,50%) 000deg,
+					hsl(340,80%,50%) 020deg,
+					hsl(320,80%,50%) 040deg,
+					hsl(300,80%,50%) 060deg,
+					hsl(280,80%,50%) 080deg,
+					hsl(260,80%,50%) 100deg,
+					hsl(240,80%,50%) 120deg,
+					hsl(220,80%,50%) 140deg,
+					hsl(200,80%,50%) 160deg,
+					hsl(180,80%,50%) 180deg,
+					hsl(160,80%,50%) 200deg,
+					hsl(140,80%,50%) 220deg,
+					hsl(120,80%,50%) 240deg,
+					hsl(100,80%,50%) 260deg,
+					hsl(080,80%,50%) 280deg,
+					hsl(060,80%,50%) 300deg,
+					hsl(040,80%,50%) 320deg,
+					hsl(020,80%,50%) 340deg,
+					hsl(000,80%,50%) 360deg
+				);
+				background-position:center center;
+				background-repeat:no-repeat;
+				transform:matrix(0,-1,-1,0,0,0);
+			}
+			canvas{
+				position:relative;
+				width:100%;
+				height:100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="background"></div>
+		<script type="text/javascript">
+			(()=>{
+				let ce=t=>document.createElement(t),cd=(i,t)=>{let d=ce("div");if (i) d.id=i;if (t) d.textContent=t;return d;},ap=(p,c)=>p.appendChild(c),rc=c=>c.parentNode.removeChild(c),sa=(e,k,v)=>e.setAttribute(k,v),ra=(e,k)=>e.removeAttribute(k),ael=(e,t,f)=>e.addEventListener(t,f),sc=(e,c)=>{if (c) sa(e,"class",c);else ra(e,"class");return e;},html=document.documentElement,body=document.body;
+
+				var pg,whl;
+
+				let c=ce("canvas");
+				let ct=c.getContext("webgl");
+				if (!ct) return;
+				while (body.firstChild) rc(body.firstChild);
+				ap(body,c);
+
+				(()=>{
+					pg=ct.createProgram();
+					let s=[
+						{
+							type:ct.VERTEX_SHADER,
+							code:`
+								attribute vec2 position;
+
+								void main() {
+									gl_Position = vec4(position*2.0-vec2(1.0,1.0),0.0,1.0);
+								}
+							`
+						},
+						{
+							type:ct.FRAGMENT_SHADER,
+							code:`
+								precision mediump float;
+								uniform vec2 frame;
+
+								const float PI = atan(1.0,1.0)*4.0;
+
+								float radius = min(frame.x/2.0,frame.y/2.0);
+
+								vec2 coord() {
+									return gl_FragCoord.xy-frame/2.0;
+								}
+
+								float arg(vec2 p) {
+									if (p.x==0.0) {
+										if (p.y==0.0) return 0.0;
+										if (p.y>0.0) return 90.0;
+										if (p.y<0.0) return 270.0;
+									}
+									else return mod(atan(p.y,p.x)*180.0/PI+360.0,360.0);
+								}
+
+								vec4 color(float h,float s,float l) {
+									float tM = clamp(l*2.0-0.0,0.0,1.0);
+									float tm = clamp(l*2.0-1.0,0.0,1.0);
+									float M = ((tM+tm)+(tM-tm)*s)/2.0;
+									float m = ((tM+tm)+(tm-tM)*s)/2.0;
+									vec3 rgb;
+									if (h<60.0) rgb=vec3(1.0,h/60.0,0.0);
+									else if (h<120.0) rgb=vec3(2.0-h/60.0,1.0,0.0);
+									else if (h<180.0) rgb=vec3(0.0,1.0,h/60.0-2.0);
+									else if (h<240.0) rgb=vec3(0.0,4.0-h/60.0,1.0);
+									else if (h<300.0) rgb=vec3(h/60.0-4.0,0.0,1.0);
+									else if (h<360.0) rgb=vec3(1.0,0.0,6.0-h/60.0);
+									return vec4(rgb*(M-m)+vec3(m),1.0);
+								}
+
+								void main() {
+									vec2 p = coord();
+									gl_FragColor = color(arg(p),0.8,1.0-0.5*clamp(length(p)/radius,0.0,1.0));
+								}
+							`
+						}
+					];
+					s.forEach(o=>{
+						let s=ct.createShader(o.type);
+						ct.shaderSource(s,o.code);
+						ct.compileShader(s);
+						ct.attachShader(pg,s);
+						if (!ct.getShaderParameter(s,ct.COMPILE_STATUS)) {
+							console.log("Shader: "+ct.getShaderInfoLog(s));
+							return true;
+						}
+					});
+					ct.linkProgram(pg);
+					if (!ct.getProgramParameter(pg,ct.LINK_STATUS)) {
+						console.log("Program: "+ct.getProgramInfoLog(pg));
+						return true;
+					}
+					ct.useProgram(pg);
+					let pb=ct.createBuffer();
+					let pl=ct.getAttribLocation(pg,"position");
+					let ib=ct.createBuffer();
+					ct.bindBuffer(ct.ARRAY_BUFFER,pb);
+					ct.enableVertexAttribArray(pl);
+					ct.vertexAttribPointer(pl,2,ct.FLOAT,false,0,0);
+					ct.bufferData(ct.ARRAY_BUFFER,new Float32Array([0,0,0,1,1,0,1,1]),ct.STATIC_DRAW);
+					ct.bindBuffer(ct.ELEMENT_ARRAY_BUFFER,ib);
+					ct.bufferData(ct.ELEMENT_ARRAY_BUFFER,new Int16Array([0,1,2,1,2,3]),ct.STATIC_DRAW);
+					whl=ct.getUniformLocation(pg,"frame");
+				})();
+
+				let resize=(()=>{
+					var rt=null;
+					let f=()=>{
+						let rect=c.getBoundingClientRect();
+						let pr=window.devicePixelRatio;
+						let w=rect.width;
+						let h=rect.height;
+						c.width=w*pr;
+						c.height=h*pr;
+						ct.viewport(0,0,w*pr,h*pr);
+						ct.uniform2f(whl,w,h);
+						ct.drawElements(ct.TRIANGLES,6,ct.UNSIGNED_SHORT,0);
+					};
+					return ()=>{
+						f();
+						return new Promise(r=>{
+							rt=r;
+							setTimeout(f(),100);
+						});
+					};
+				})();
+
+				ael(window,"resize",()=>{
+					resize();
+				});
+				ael(window,"load",()=>{
+					resize();
+				});
+
+			})();
+		</script>
+	</body>
+</html>

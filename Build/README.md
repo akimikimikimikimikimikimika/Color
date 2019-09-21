@@ -6,19 +6,23 @@
 ビルドツールを使うには,以下のシステム或いはソフトウェアがインストールされていることが必要である。
 
 * macOS
-* Python
+* Ruby
 * PHP
+* Python
 * Inkscape
-* png2ico
 
 ### ビルドの仕方
-Buildフォルダ内の Build.py を使ってColorを組み立てる。  
+Buildフォルダ内の Build.rb を使ってColorを組み立てる。  
 ビルドシステムは2段階に分かれている。
 * 画像リソースのビルド
 * ページのビルド
 尚,後者を実行するには,前者で生成する画像が必要である。  
 それぞれの工程は,以下のコードをシェルに入力することで可能である。
 ```Shell
-Build/Build.py images # 画像リソースのビルド
-Build/Build.py pages # ページのビルド
+Build/Build.rb # ページのビルド
+Build/Build.rb -no-online # オンライン版を出力しない
+Build/Build.rb -no-offline # オフライン版を出力しない
+Build/Build.rb -no-compress # 圧縮しない
+
+Build/Build.rb -images # 画像リソースのビルド
 ```

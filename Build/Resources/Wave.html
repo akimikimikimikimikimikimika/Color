@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover" />
+		<meta name="format-detection" content="telephone=no,email=no,address=no" />
+		<meta name="referrer" content="never" />
+		<meta name="referrer" content="no-referrer" />
+		<meta name="application-name" content="Wave" />
+		<meta name="apple-mobile-web-app-title" content="Wave" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<title>Wave</title>
+		<style type="text/css">
+			*{
+				cursor:default;
+				user-select:none;
+				-webkit-user-select:none;
+				-moz-user-select:none;
+			}
+			html{
+				background-color:#000000;
+				width:100vw;
+				height:100vh;
+			}
+			body{
+				margin:0px;
+				padding:0px;
+				position:fixed;
+				left:0px;
+				right:0px;
+				top:0px;
+				bottom:0px;
+			}
+			canvas{
+				position:relative;
+				width:100%;
+				height:100%;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			(()=>{
+				let ce=t=>document.createElement(t),cd=(i,t)=>{let d=ce("div");if (i) d.id=i;if (t) d.textContent=t;return d;},ap=(p,c)=>p.appendChild(c),rc=c=>c.parentNode.removeChild(c),sa=(e,k,v)=>e.setAttribute(k,v),ra=(e,k)=>e.removeAttribute(k),ael=(e,t,f)=>e.addEventListener(t,f),sc=(e,c)=>{if (c) sa(e,"class",c);else ra(e,"class");return e;},html=document.documentElement,body=document.body;
+
+				let status={
+					hue:200,
+					interval:50,
+					move:0.1,
+					unitLength:300,
+					speed:200
+				};
+
+				let turn=2*Math.PI;
+				var pg,w,h,pb,pl,ib,hl;
+
+				let c=ce("canvas");
+				ap(body,c);
+				let ct=c.getContext("webgl");
+
+				(()=>{
+					pg=ct.createProgram();
+					let s=[
+						{
+							type:ct.VERTEX_SHADER,
+							code:`
+								attribute vec3 position;
+								uniform float hue;
+
+								varying vec4 clr;
+
+								vec4 color(float h,float s,float l) {
+									float tM = clamp(l*2.0-0.0,0.0,1.0);
+									float tm = clamp(l*2.0-1.0,0.0,1.0);
+									float M = ((tM+tm)+(tM-tm)*s)/2.0;
+									float m = ((tM+tm)+(tm-tM)*s)/2.0;
+									vec3 rgb;
+									if (h<60.0) rgb=vec3(1.0,h/60.0,0.0);
+									else if (h<120.0) rgb=vec3(2.0-h/60.0,1.0,0.0);
+									else if (h<180.0) rgb=vec3(0.0,1.0,h/60.0-2.0);
+									else if (h<240.0) rgb=vec3(0.0,4.0-h/60.0,1.0);
+									else if (h<300.0) rgb=vec3(h/60.0-4.0,0.0,1.0);
+									else if (h<360.0) rgb=vec3(1.0,0.0,6.0-h/60.0);
+									return vec4(rgb*(M-m)+vec3(m),1.0);
+								}
+
+								void main() {
+									gl_Position = vec4(position.xy,0.0,1.0);
+									clr = color(clamp(hue,0.0,360.0),0.8,position.z/2.0);
+								}
+							`
+						},
+						{
+							type:ct.FRAGMENT_SHADER,
+							code:`
+								precision mediump float;
+
+								varying vec4 clr;
+
+								void main() {
+									gl_FragColor = clr;
+								}
+							`
+						}
+					];
+					s.forEach(o=>{
+						let s=ct.createShader(o.type);
+						ct.shaderSource(s,o.code);
+						ct.compileShader(s);
+						ct.attachShader(pg,s);
+						if (!ct.getShaderParameter(s,ct.COMPILE_STATUS)) {
+							console.log("Shader: "+ct.getShaderInfoLog(s));
+							return true;
+						}
+					});
+					ct.linkProgram(pg);
+					if (!ct.getProgramParameter(pg,ct.LINK_STATUS)) {
+						console.log("Program: "+ct.getProgramInfoLog(pg));
+						return true;
+					}
+					ct.useProgram(pg);
+				})();
+
+				(()=>{
+					pb=ct.createBuffer();
+					ib=ct.createBuffer();
+					pl=ct.getAttribLocation(pg,"position");
+					hl=ct.getUniformLocation(pg,"hue");
+				})();
+
+				var time=null,t=0,dir=null,id=null;
+				let k=2*Math.PI/status.unitLength;
+
+				let draw=()=>{
+					let n=performance.now();
+					if (time) t+=(n-time)/1000;
+					t%=Number.MAX_VALUE;
+					time=n;
+
+					let data=dir.map((o,i)=>{
+						let l=[];
+						for (var n=-o.size;n<=o.size;n++) {
+							let p=n*status.interval;
+							p+=Math.sin(k*(p-t*o.velocity)+o.phase)*status.unitLength*status.move;
+							l.push([p/o.max,1-Math.abs(n)%2]);
+						}
+						return l;
+					});
+
+					let ps=[];
+					data[0].forEach(x=>data[1].forEach(y=>ps.push(x[0],-y[0],(x[1]+y[1])/2)));
+
+					ct.bindBuffer(ct.ARRAY_BUFFER,pb);
+					ct.enableVertexAttribArray(pl);
+					ct.vertexAttribPointer(pl,3,ct.FLOAT,false,0,0);
+					ct.bufferData(ct.ARRAY_BUFFER,new Float32Array(ps),ct.STATIC_DRAW);
+					ct.bindBuffer(ct.ELEMENT_ARRAY_BUFFER,ib);
+					ct.bufferData(ct.ELEMENT_ARRAY_BUFFER,id,ct.STATIC_DRAW);
+					ct.drawElements(ct.TRIANGLES,id.length,ct.UNSIGNED_SHORT,0);
+
+					ct.uniform1f(hl,status.hue);
+
+					requestAnimationFrame(draw);
+				};
+
+				let resize=(()=>{
+					var rt=null;
+					let f=()=>{
+						let rect=c.getBoundingClientRect();
+						let pr=window.devicePixelRatio;
+						w=rect.width;
+						h=rect.height;
+						c.width=w*pr;
+						c.height=h*pr;
+						ct.viewport(0,0,w*pr,h*pr);
+						let ang=2*Math.PI*Math.random();
+						dir=[
+							{
+								max:w/2,
+								size:Math.ceil(w/2/status.interval)+1,
+								velocity:status.speed*Math.cos(ang),
+								phase:2*Math.PI*Math.random()
+							},
+							{
+								max:h/2,
+								size:Math.ceil(h/2/status.interval)+1,
+								velocity:status.speed*Math.sin(ang),
+								phase:2*Math.PI*Math.random()
+							}
+						];
+						let i=[];
+						let m=dir.map(o=>o.size*2+1);
+						let rf=[[0,0],[0,1],[1,0],[0,1],[1,0],[1,1]];
+						for (var x=1;x<m[0];x++) for (var y=1;y<m[1];y++) rf.forEach(r=>{
+							let cx=x-r[0],cy=y-r[1];
+							i.push(cx*m[1]+cy);
+						});
+						id=new Int16Array(i);
+						if (rt) {
+							let r=rt;
+							rt=null;
+							r(null);
+						}
+					};
+					return ()=>{
+						f();
+						return new Promise(r=>{
+							rt=r;
+							setTimeout(f(),100);
+						});
+					};
+				})();
+
+				ael(window,"resize",()=>{
+					resize();
+				});
+				ael(window,"load",()=>{
+					resize().then(draw);
+				});
+
+			})();
+		</script>
+	</body>
+</html>
