@@ -40,45 +40,43 @@ if (count($argv)>2) for ($n=1;$n<count($argv);$n++) switch ($argv[$n]) {
 		$embed=true;break;
 }
 
-function gradient($hue) {
-	$source = <<< source
-			<linearGradient id="gradient" x1="90%" y1="0%" x2="10%" y2="100%">
-				<stop offset="0%" stop-color="hsl($hue,74%)" />
-				<stop offset="50%" stop-color="hsl($hue,50%)" />
-				<stop offset="100%" stop-color="hsl($hue,26%)" />
-			</linearGradient>
-	source;
-	return $source;
-}
-
 function pistil($id,$hue) {
-	global $i,$white;
+	global $i,$white,$embed,$un;
+	$rgh=$embed&&($un==19) ? ' style="--hue:'.$hue.';"' : "";
+	$sc1=$embed ? ' class="pistilColor000"' : ' stop-color="hsl('.$hue.',85%)"';
+	$sc2=$embed ? ' class="pistilColor100"' : ' stop-color="hsl('.$hue.','.($white?100:50).'%)"';
 	$source = <<< source
-			<radialGradient id="$id">
-				<stop offset="0%" stop-color="hsl($hue,85%)" stop-opacity="1" />
-				<stop offset="100%" stop-color="hsl($hue,{$i($white?100:50)}%)" stop-opacity="1" />
+			<radialGradient id="$id"$rgh>
+				<stop offset="0%"$sc1 />
+				<stop offset="100%"$sc2 />
 			</radialGradient>
 	source;
 	return $source;
 }
 
 function petal($id,$hue) {
-	global $i,$white;
+	global $i,$white,$embed,$un;
+	$rgh=$embed&&($un==19) ? ' style="--hue:'.$hue.';"' : "";
+	$sc1=$embed ? ' class="petalColor025"' : ' stop-color="hsl('.$hue.',85%)"';
+	$sc2=$embed ? ' class="petalColor100"' : ' stop-color="hsl('.$hue.','.($white?100:50).'%)"';
 	$source = <<< source
-			<radialGradient id="$id" cx="0%" cy="50%" r="100%">
-				<stop offset="25%" stop-color="hsl($hue,85%)" stop-opacity="1" />
-				<stop offset="100%" stop-color="hsl($hue,{$i($white?100:50)}%)" stop-opacity="1" />
+			<radialGradient id="$id" cx="0%" cy="50%" r="100%"$rgh>
+				<stop offset="25%"$sc1 />
+				<stop offset="100%"$sc2 />
 			</radialGradient>
 	source;
 	return $source;
 }
 
 function sepal($id,$hue) {
-	global $i,$white;
+	global $i,$white,$embed,$un;
+	$rgh=$embed&&($un==19) ? ' style="--hue:'.$hue.';"' : "";
+	$sc1=$embed ? ' class="sepalColor000"' : ' stop-color="hsl('.$hue.','.($white?95:74).'%)" stop-opacity="0.3"';
+	$sc2=$embed ? ' class="sepalColor100"' : ' stop-color="hsl('.$hue.','.($white?100:26).'%)" stop-opacity="0.3"';
 	$source = <<< source
-			<radialGradient id="$id" cx="0%" cy="50%" r="100%">
-				<stop offset="0%" stop-color="hsl($hue,{$i($white?95:74)}%)" stop-opacity="{$i($white?0.3:0.1)}" />
-				<stop offset="100%" stop-color="hsl($hue,{$i($white?100:26)}%)" stop-opacity="{$i($white?0.3:0.1)}" />
+			<radialGradient id="$id" cx="0%" cy="50%" r="100%"$rgh>
+				<stop offset="0%"$sc1 />
+				<stop offset="100%"$sc2 />
 			</radialGradient>
 	source;
 	return $source;
@@ -119,27 +117,10 @@ function hue($n) {
 <?php
 	$list = array();
 	if ($un<19) {
-		if ($background) array_push($list,gradient(hue($un)));
-		if ($embed) array_push($list,<<< source
-				<radialGradient id="pistilColor">
-					<stop offset="0%" class="pistilColor000" />
-					<stop offset="100%" class="pistilColor100" />
-				</radialGradient>
-				<radialGradient id="petalColor" cx="0%" cy="50%" r="100%">
-					<stop offset="25%" class="petalColor025" />
-					<stop offset="100%" class="petalColor100" />
-				</radialGradient>
-				<radialGradient id="sepalColor" cx="0%" cy="50%" r="100%">
-					<stop offset="0%" id="sepalColor000" />
-					<stop offset="100%" id="sepalColor100" />
-				</radialGradient>
-		source);
-		else {
-			$h=hue($un);
-			array_push($list,petal("petalColor",$h));
-			array_push($list,pistil("pistilColor",$h));
-			array_push($list,sepal("sepalColor",$h));
-		}
+		$h=hue($un);
+		array_push($list,petal("petalColor",$h));
+		array_push($list,pistil("pistilColor",$h));
+		array_push($list,sepal("sepalColor",$h));
 	}
 	else {
 		for ($n=0;$n<18;$n++) array_push($list,petal(c($n),hue($n)));
@@ -157,7 +138,7 @@ function hue($n) {
 	$list = array();
 	if ($background) {
 		$rect=$card?'x="-975.2380952381" y="-512" width="1950.4761904762" height="1024"':'x="-512" y="-512" width="1024" height="1024"';
-		array_push($list,"\t\t".'<rect '.$rect.' fill="'.($un<19?"url(#gradient)":"#ffffff").'" />');
+		array_push($list,"\t\t".'<rect '.$rect.' fill="'.($un<19?("hsl(".hue($un).",50%)"):"#FFFFFF").'" />');
 	}
 	for ($n=0;$n<18;$n++) {
 		$t="";

@@ -1,5 +1,5 @@
 :root{
-	--color-space:radial-gradient(circle,rgba(255,255,255,1) 0vmin 0vmin,rgba(255,255,255,0) 50vmin 50vmin),conic-gradient(from 90deg,
+	--vivid-color-space:conic-gradient(from 90deg,
 		hsl(360,80%,50%) 000deg,
 		hsl(340,80%,50%) 020deg,
 		hsl(320,80%,50%) 040deg,
@@ -20,6 +20,7 @@
 		hsl(020,80%,50%) 340deg,
 		hsl(000,80%,50%) 360deg
 	);
+	--color-space:radial-gradient(circle,rgba(255,255,255,1) 0vmin 0vmin,rgba(255,255,255,0) 50vmin 50vmin),var(--vivid-color-space);
 	--scroll-thumb:linear-gradient(to right,
 		hsl(000,80%,50%),
 		hsl(020,80%,50%),
@@ -43,18 +44,24 @@
 	);
 	--default-cursor:default;
 	--pointer-cursor:pointer;
-	--light:#dddddd;
+	--light-mono:#dddddd;
 	--light-opaque:rgba(204,204,204,0.8);
 	--middle:hsl(0,0%,50%);
 	--dark-opaque:rgba(51,51,51,0.8);
-	--dark:#222222;
-	--light-bg:var(--light);
-	--dark-bg:var(--dark);
+	--dark-mono:#222222;
+	--light-bg:var(--light-mono);
+	--dark-bg:var(--dark-mono);
+}
+#flower-bg{
+	background-image:var(--vivid-color-space);
 }
 radialGradient[id^="s"]>stop{stop-opacity:0.1;}
+#textarea-series{
+	transition:background-color var(--CST);
+	background-color:var(--bg);
+}
 textarea{
-	--focused:var(--middle);
-	-webkit-tap-highlight-color:transparent;
+	-webkit-tap-highlight-color:hsla(var(--border-hue),50%,0.3);
 }
 @media screen {
 	html{background-color:var(--bg);}
@@ -65,61 +72,81 @@ textarea{
 	.light{--bg:var(--light-bg);}
 	.dark{--bg:var(--dark-bg);}
 	.light #statusbar{background-color:var(--middle);}
-	.light #menuShadow{background-color:var(--dark);}
-	.dark #menuShadow{background-color:var(--light);}
+	.light #menuShadow{background-color:var(--dark-mono);}
+	.dark #menuShadow{background-color:var(--light-mono);}
 	.light #menuContainer,.light .desc,.dark #menuButton,.dark #menu>div{
-		color:var(--dark);
+		color:var(--dark-mono);
 		background-color:var(--light-opaque);
 	}
 	.dark #menuContainer,.dark .desc,.light #menuButton,.light #menu>div{
-		color:var(--light);
+		color:var(--light-mono);
 		background-color:var(--dark-opaque);
 	}
+	.light #textarea-series{
+		--bg:hsl(var(--bg-hue),90%);
+	}
+	.dark #textarea-series{
+		--bg:hsl(var(--bg-hue),10%);
+	}
 	.light textarea{
-		--text:var(--dark);
-		--selection:rgba(51,51,51,0.4);
-		--caret:var(--dark);
+		--text:hsl(var(--text-hue),20%);
+		--border:hsl(var(--border-hue),20%);
+		--selection:hsla(var(--selection-hue),40%,0.4);
+		--caret:hsl(var(--selection-hue),30%);
+		--focused:hsl(var(--border-hue),70%);
 	}
 	.dark textarea{
-		--text:var(--light);
-		--selection:rgba(204,204,204,0.4);
-		--caret:var(--light);
+		--text:hsl(var(--text-hue),80%);
+		--border:hsl(var(--border-hue),80%);
+		--selection:hsla(var(--selection-hue),60%,0.4);
+		--caret:hsl(var(--selection-hue),70%);
+		--focused:hsl(var(--border-hue),70%);
 	}
 }
 @media screen and (prefers-color-scheme: light) {
 	.pcs{--bg:var(--light-bg);}
 	.pcs #statusbar{background-color:var(--middle);}
-	.pcs #menuShadow{background-color:var(--dark);}
+	.pcs #menuShadow{background-color:var(--dark-mono);}
 	.pcs #menuContainer{background-color:var(--light-opaque);}
 	.pcs #menuContainer,.pcs .desc{
-		color:var(--dark);
+		color:var(--dark-mono);
 		background-color:var(--light-opaque);
 	}
 	.pcs #menuButton,.pcs #menu>div{
-		color:var(--light);
+		color:var(--light-mono);
 		background-color:var(--dark-opaque);
 	}
+	.pcs #textarea-series{
+		--bg:hsl(var(--bg-hue),90%);
+	}
 	.pcs textarea{
-		--text:var(--dark);
-		--selection:rgba(51,51,51,0.4);
-		--caret:var(--dark);
+		--text:hsl(var(--text-hue),20%);
+		--border:hsl(var(--border-hue),20%);
+		--selection:hsla(var(--selection-hue),40%,0.4);
+		--caret:hsl(var(--selection-hue),30%);
+		--focused:hsl(var(--border-hue),70%);
 	}
 }
 @media screen and (prefers-color-scheme: dark) {
 	.pcs{--bg:var(--dark-bg);}
-	.pcs #menuShadow{background-color:var(--light);}
+	.pcs #menuShadow{background-color:var(--light-mono);}
 	.pcs #menuContainer{background-color:var(--dark-opaque);}
 	.pcs #menuContainer,.pcs .desc{
-		color:var(--light);
+		color:var(--light-mono);
 		background-color:var(--dark-opaque);
 	}
 	.pcs #menuButton,.pcs #menu>div{
-		color:var(--dark);
+		color:var(--dark-mono);
 		background-color:var(--light-opaque);
 	}
+	.pcs #textarea-series{
+		--bg:hsl(var(--bg-hue),10%);
+	}
 	.pcs textarea{
-		--text:var(--light);
-		--selection:rgba(204,204,204,0.4);
-		--caret:var(--light);
+		--text:hsl(var(--text-hue),80%);
+		--border:hsl(var(--border-hue),80%);
+		--selection:hsla(var(--selection-hue),60%,0.4);
+		--caret:hsl(var(--selection-hue),70%);
+		--focused:hsl(var(--border-hue),70%);
 	}
 }

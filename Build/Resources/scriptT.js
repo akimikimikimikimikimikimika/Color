@@ -61,10 +61,18 @@ window.main({
 				vec2 p = coord();
 				float h = arg(p);
 				float d = min(length(p)/radius,1.0);
-				float m = 1.0-d*0.9;
-				float M = 1.0-d*0.1;
-				gl_FragColor = color(h,m,M);
+				if (d==0.0) gl_FragColor = vec4(1.0,1.0,1.0,1.0);
+				else {
+					float m = 1.0-d*0.9;
+					float M = 1.0-d*0.1;
+					gl_FragColor = color(h,m,M);
+				}
 			}
 		`;
-	})()
+	})(),
+	editorColor:o=>{
+		let f=()=>Math.random()*360+"deg,80%";
+		o.list.setAttribute("style",`--bg-hue:${f()};`);
+		o.areas.forEach(a=>a.setAttribute("style",`--text-hue:${f()};--selection-hue:${f()};--border-hue:${f()};`));
+	}
 });

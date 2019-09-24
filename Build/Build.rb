@@ -54,7 +54,7 @@ def check(n)
 end
 
 def hslToHex(t)
-	hsl=t.scan(/^hsl\(([0-9]+),([0-9]+)%,([0-9]+)%\)$/)[0]
+	hsl=t.scan(/^hsl\(([0-9]+)deg,([0-9]+)%,([0-9]+)%\)$/)[0]
 	h=hsl[0].to_i
 	s=hsl[1].to_i/100
 	l=hsl[2].to_i/100
@@ -85,7 +85,7 @@ end
 
 def hue(n)
 	if n<19 then
-		"#{n*20%360},#{n<18 ? 80 : 0}%"
+		"#{n*20%360}deg,#{n<18 ? 80 : 0}%"
 	else
 		""
 	end
