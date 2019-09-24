@@ -12,6 +12,9 @@
 html{background-color:var(--vivid);}
 #pageViewController{background-color:var(--bg);}
 #pageViewController,#statusbar{transition:background-color var(--CST);}
+#statusbar{
+	--statusbar:hsla(var(--hue),30%,0.8);
+}
 #flower-bg{
 	background-color:var(--vivid);
 }
@@ -35,7 +38,6 @@ textarea{
 	.js.dark #pageViewController::-webkit-scrollbar-track{background-color:var(--semi-dark);}
 	.js.light #pageViewController::-webkit-scrollbar-thumb{background-color:var(--semi-dark);}
 	.js.dark #pageViewController::-webkit-scrollbar-thumb{background-color:var(--semi-light);}
-	.light #statusbar{background-color:var(--semi-dark);}
 	.light #menuShadow{background-color:var(--dark);}
 	.dark #menuShadow{background-color:var(--light);}
 	.light #menuContainer{background-color:hsla(var(--hue),90%,0.8);}
@@ -67,7 +69,6 @@ textarea{
 	.pcs{--bg:var(--light-bg);}
 	.js.pcs #pageViewController::-webkit-scrollbar-track{background-color:var(--semi-light);}
 	.js.pcs #pageViewController::-webkit-scrollbar-thumb{background-color:var(--semi-dark);}
-	.pcs #statusbar{background-color:hsl(var(--hue),40%);}
 	.pcs #menuShadow{background-color:hsl(var(--hue),20%);}
 	.pcs #menuContainer{background-color:hsla(var(--hue),90%,0.8);}
 	.pcs #menu>div{

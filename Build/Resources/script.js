@@ -76,6 +76,7 @@ window.main=pkg=>{
 			let c=[
 				"js",
 				(["light","pcs","dark"])[t.scheme],
+				(["flower-page","colorSpace-page","editor-page"])[t.page],
 				(["flower","transforming","drops"])[t.page0Mode],
 				t.noCanvas?"colorSpace-background":"colorSpace-canvas",
 				t.descShown?"desc-shown":"desc-hidden",
@@ -84,7 +85,7 @@ window.main=pkg=>{
 			if (t.standalone) c.push("standalone");
 			if (t.browser) c.push(t.browser.toLowerCase());
 			if (t.touch) c.push("touch");
-			if (t.vivid&&(t.page0Mode==0)) c.push("vivid");
+			if (t.vivid) c.push("vivid");
 			sc(html,c.join(" "));
 			switch (t.scheme) {
 				case 0:t.dark=false;break;
@@ -132,7 +133,7 @@ window.main=pkg=>{
 		descShown:false,
 		menuShown:false,
 		dark:false,
-		scheme:0, /* 0:light 1:pcs 2:dark */
+		scheme:0,
 		vivid:false,
 		colorSchemePreferred:false,
 		touch:false,

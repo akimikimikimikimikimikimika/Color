@@ -52,6 +52,9 @@
 	--light-bg:var(--light-mono);
 	--dark-bg:var(--dark-mono);
 }
+#statusbar{
+	--statusbar:hsla(0,0%,50%,0.8);
+}
 #flower-bg{
 	background-image:var(--vivid-color-space);
 }
@@ -71,7 +74,6 @@ textarea{
 	.js #pageViewController::-webkit-scrollbar-track{background-color:var(--middle);}
 	.light{--bg:var(--light-bg);}
 	.dark{--bg:var(--dark-bg);}
-	.light #statusbar{background-color:var(--middle);}
 	.light #menuShadow{background-color:var(--dark-mono);}
 	.dark #menuShadow{background-color:var(--light-mono);}
 	.light #menuContainer,.light .desc,.dark #menuButton,.dark #menu>div{
@@ -105,7 +107,6 @@ textarea{
 }
 @media screen and (prefers-color-scheme: light) {
 	.pcs{--bg:var(--light-bg);}
-	.pcs #statusbar{background-color:var(--middle);}
 	.pcs #menuShadow{background-color:var(--dark-mono);}
 	.pcs #menuContainer{background-color:var(--light-opaque);}
 	.pcs #menuContainer,.pcs .desc{
