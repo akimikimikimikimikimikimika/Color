@@ -5,7 +5,7 @@ window.main=pkg=>{
 		let e=ce("div");
 		sc(e,cls);
 		sa(e,"id",id);
-		e.textContent=text;
+		if (text) e.textContent=text;
 		return e;
 	},ap=(p,c)=>p.appendChild(c),ib=(a,c)=>a.parentNode.insertBefore(c,a),rep=(n,o)=>o.parentNode.replaceChild(n,o),rc=e=>e.parentNode.removeChild(e),cn=e=>e.cloneNode(true),ga=(e,k)=>e.getAttribute(k),sa=(e,k,v)=>{
 		if (v) e.setAttribute(k,v);

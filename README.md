@@ -37,8 +37,7 @@ Colorのページを書き出すことができる。詳しくは[こちら](htt
 ### 特記事項
 - Android版ChromeやVivaldiでは,上部バーの色が変化する。
 - アイコンは通常のアイコンとapple-touch-icon,Windowsタイルに対応。
-- Internet Explorerでは利用できない。
-- iOSのChromeでは適切に表示されない。
+- Internet Explorerでは利用できない。古いバージョンの Microsoft Edge でも動作しない。
 - iPhone X 対応。
 
 ### 更新内容

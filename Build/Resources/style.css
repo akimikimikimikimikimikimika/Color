@@ -221,6 +221,7 @@
 	.menu-shown #menuShadow{opacity:0.3;}
 	#menuContainer{
 		border-radius:5px;
+		transform:translateX(calc( 100% + 10px ));
 		transform:translateX(calc( 100% + 10px + env(safe-area-inset-right) ));
 		transition:transform 0.5s ease-in-out,background-color var(--CST);
 		position:absolute;

@@ -54,10 +54,10 @@ def check(n)
 end
 
 def hslToHex(t)
-	hsl=t.scan(/^hsl\(([0-9]+)deg,([0-9]+)%,([0-9]+)%\)$/)[0]
-	h=hsl[0].to_i
-	s=hsl[1].to_i/100
-	l=hsl[2].to_i/100
+	hsl=t.scan(/^hsl\(([0-9\.]+)deg,([0-9\.]+)%,([0-9\.]+)%\)$/)[0]
+	h=hsl[0].to_f
+	s=hsl[1].to_f/100
+	l=hsl[2].to_f/100
 	min=l*(1-s)+[0,l*2-1].max*s
 	max=l*(1-s)+[1,l*2].min*s
 	if h<60 then
@@ -205,7 +205,7 @@ def main
 				x=hslToHex("hsl(#{h},50%)")
 				desc="S#{un<18 ? ">" : "="}0"
 				if un<18 then
-					desc="H=#{un*20}°"+desc
+					desc="H=#{un*20}° "+desc
 				end
 			else
 				x="#333333"
