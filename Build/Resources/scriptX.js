@@ -101,5 +101,36 @@ window.main({
 				else gl_FragColor = color(hue,mM.x,mM.y);
 			}
 		`;
-	})()
+	})(),
+	specificStyle:(h,s)=>{
+		let cursors=[
+			{
+				name:"default",
+				viewBox:190,
+				strokePath:"M 30,30 v -10 h -10 v 10 h 10 M 40,40 v -10 h -10 v 10 h 10 M 50,50 v -10 h -10 v 10 h 10 M 60,60 v -10 h -10 v 10 h 10 M 70,70 v -10 h -10 v 10 h 10 M 80,80 v -10 h -10 v 10 h 10 M 90,90 v -10 h -10 v 10 h 10 M 100,100 v -10 h -10 v 10 h 10 M 110,110 v -10 h -10 v 10 h 10 M 110,110 v 10 h -40 v 20 h 10 v -10 h 40 v -20 h -10 M 10,150 v -130 h 10 v -10 h -10 v -10 h -10 v 170 h 20 v -10 h -10 v -10 M 20,160 h 10 v -10 h -10 v 10 M 30,150 h 10 v -10 h -10 v 10 M 40,130 v 10 h 10 v -10 h -10 M 60,140 h -10 v 20 h 10 v -20 M 80,160 h 10 v -20 h -10 v 20 M 70,160 h -10 v 20 h 10 v -20 M 70,180 v 10 h 20 v -10 h -20 M 90,180 h 10 v -20 h -10 v 20",
+				fillPath:"M 110,120 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v -10 h -10 v 140 h 10 v -10 h 10 v -10 h 10 v -10 h 10 v 10 h 10 v 20 h 10 v 20 h 20 v -20 h -10 v -20 h -10 v -20 h 40"
+			},
+			{
+				name:"pointer",
+				viewBox:220,
+				strokePath:"M 10,120 v 10 h 10 v -10 h -10 M 10,100 h 20 v -10 h -30 v 30 h 10 v -20 M 40,20 v 80 h -10 v 10 h 10 v 10 h 10 v -110 h -10 v 10 M 60,0 h -10 v 10 h 20 v -10 h -10 M 90,50 h -10 v -40 h -10 v 90 h 10 v -40 h 20 v -10 h -10 M 120,60 h -20 v 40 h 10 v -30 h 20 v -10 h -10 M 160,90 v 70 h 10 v -70 h -10 M 150,80 v 10 h 10 v -10 h -10 M 140,70 h -10 v 40 h 10 v -30 h 10 v -10 h -10 M 30,130 h -10 v 20 h 10 v -20 M 40,150 h -10 v 20 h 10 v -20 M 50,170 h -10 v 20 h 10 v -20 M 140,200 v 10 h -80 v -20 h -10 v 30 h 100 v -30 h -10 v 10 M 150,170 v 20 h 10 v -30 h -10 v 10",
+				fillPath:"M 150,90 v -10 h -10 v 30 h -10 v -40 h -20 v 30 h -10 v -40 h -20 v 40 h -10 v -90 h -20 v 110 h -10 v -10 h -10 v -10 h -20 v 20 h 10 v 10 h 10 v 20 h 10 v 20 h 10 v 20 h 10 v 20 h 80 v -20 h 10 v -30 h 10 v -70 h -10"
+			}
+		];
+		s.innerHTML=`
+			:root{
+				--hue:${h};
+				${cursors.map(c=>{
+					let b=new Blob([`<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 ${c.viewBox} ${c.viewBox}">
+							<path d="${c.strokePath}" fill="hsl(${h},100%)" />
+							<path d="${c.fillPath}" fill="hsl(${h},40%)" />
+						</svg>
+					`],{type:"image/svg+xml",endings:"native"});
+					let u=URL.createObjectURL(b);
+					return `--${c.name}-cursor-image:url(${u});`;
+				}).join("\n")}
+			}
+		`;
+	}
 });

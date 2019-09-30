@@ -116,8 +116,7 @@ def main
 	source=[nil,nil]
 	offline=[nil,nil,nil]
 	manifest=nil
-	cursor=[nil,nil]
-	style=[nil,nil,nil,nil]
+	style=[nil,nil,nil]
 	script=[nil,nil,nil]
 	flower=[nil,nil]
 
@@ -162,9 +161,6 @@ def main
 			run(pr2)
 		},
 		Proc.new{manifest=load("manifest.json")},
-		Proc.new{cursor[0]=load("cursorDefault.svg")},
-		Proc.new{cursor[1]=load("cursorPointer.svg")},
-		Proc.new{style[3]=load("styleXSpecific.css")},
 		Proc.new{flower[0]=`./image.php 18 embed`},
 		Proc.new{flower[1]=`./image.php 19 embed`},
 		Proc.new{
@@ -219,26 +215,20 @@ def main
 			src=[source[0],source[1],manifest]
 			ss=""
 			if un<19 then
-				save("/tmp/Color/#{c}cd.svg",cursor[0].gsub("$hue",h))
-				save("/tmp/Color/#{c}cp.svg",cursor[1].gsub("$hue",h))
-				ss=style[3].sub("$hue",h).sub("$default",`./Parser bc /tmp/Color/#{c}cd.svg`).sub("$pointer",`./Parser bc /tmp/Color/#{c}cp.svg`)
+				ss=":root{--hue:#{h};}"
 			end
 			3.times do |n|
 				if check(n) then
 					pr3.push(Proc.new{
 						s=src[n].gsub("$name","Color #{c}").gsub("$shortName",c).gsub("$color",x).gsub("$description",desc).gsub("$canonical","https://akimikimikimikimikimikimika.github.io/Color/Color-#{c}/")
 						if n<2 then
+							s=assign(s,"styleXSpecific",un<19 ? '<style type="text/css" id="specific">'+ss+"</style>\n" : "")
 							s=assign(s,"flower",flower[un<19?0:1])
 						end
 						if n==0 then
 							m=un<19 ? "X" : "T"
 							s=assign(s,"styleSpecific","../Resources/style#{m}.css")
 							s=assign(s,"scriptSpecific","../Resources/script#{m}.js")
-							s=assign(s,"styleXSpecific",un<19 ? '<link rel="stylesheet" type="text/css" href="specific.css" />' : "")
-							if un<19 then
-								save("/tmp/Color/#{c}ss.css",ss)
-								add("/tmp/Color/#{c}ss.css","../../Color-#{c}/specific.css",false,true)
-							end
 						elsif n==1 then
 							s=assign(s,"styleEmbedded",style[0]+"\n"+style[un<19?1:2]+"\n"+ss)
 							s=assign(s,"scriptEmbedded",script[0]+"\n"+script[un<19?1:2])

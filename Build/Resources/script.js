@@ -628,6 +628,7 @@ window.main=pkg=>{
 				status.page=page;
 			}
 		});
+		if (pkg.specificStyle) pkg.specificStyle(hue(status.color),id("specific"));
 		ap(document.body,base);
 		let r=()=>{
 			let rect=p.getBoundingClientRect();

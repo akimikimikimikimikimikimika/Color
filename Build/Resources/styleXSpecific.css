@@ -1,5 +1,0 @@
-:root{--hue:$hue;}
-:root{
-    --default-cursor-image:url($default);
-    --pointer-cursor-image:url($pointer);
-}
