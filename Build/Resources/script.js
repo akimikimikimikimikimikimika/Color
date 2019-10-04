@@ -111,6 +111,10 @@ window.main=pkg=>{
 		let c=document.title.match(/Color ([A-S])/);
 		if (c) s.color=parseInt(c[1],36)-10;
 		s.standalone=navigator.standalone||(/standalone=yes/).test(location.search);
+		s.online=(()=>{
+			let p=location.protocol;
+			return /https/.test(p)||(/http/.test(p)&&location.hostname=="localhost");
+		})();
 		if (window.ApplePaySession) s.browser="Safari";
 		if (window.chrome) s.browser="Chrome";
 		if (window.sidebar) s.browser="Firefox";
@@ -140,6 +144,8 @@ window.main=pkg=>{
 		browser:null,
 		standalone:false
 	});
+
+	if (status.online) try{navigator.serviceWorker.register("../ServiceWorker.js");}catch(e){}
 
 	let base=document.createDocumentFragment();
 	ap(base,cd(null,"statusbar"));

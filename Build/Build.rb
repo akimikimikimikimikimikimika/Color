@@ -8,8 +8,7 @@ $option={
 	image:false,
 	favicon:true,
 	icns:true,
-	online:true,
-	offline:true,
+	source:true,
 	compress:true
 }
 
@@ -23,8 +22,8 @@ def switcher
 				$option[:favicon]=false
 			when "-no-icns" then
 				$option[:icns]=false
-			when "-no-online" then
-				$option[:online]=false
+			when "-no-source" then
+				$option[:source]=false
 			when "-no-offline" then
 				$option[:offline]=false
 			when "-no-compress" then
@@ -50,7 +49,7 @@ def assign(target,var,text)
 end
 
 def check(n)
-	(n==0&&$option[:online])||(n==1&&$option[:offline])||(n==2)
+	(n==0&&$option[:source])||(n==1)
 end
 
 def hslToHex(t)
@@ -113,11 +112,8 @@ def main
 	Dir.mkdir("/tmp/Color")
 
 	# create variables
-	source=[nil,nil]
-	offline=[nil,nil,nil]
+	source=nil
 	manifest=nil
-	style=[nil,nil,nil]
-	script=[nil,nil,nil]
 	flower=[nil,nil]
 
 	# save resources to the destinations
@@ -135,30 +131,14 @@ def main
 	# load resources
 	pr1=[
 		Proc.new{
-			w=["Online","Offline"]
-			draft=nil
-			vc=nil
-
-			pr1=[
-				Proc.new{draft=load("draft.html")},
-				Proc.new{vc=load("viewController.html")}
-			]
-
-			pr2=[]
-			2.times {|n| pr2.push(Proc.new{
-				if check(n) then
-					d=w[n]
-					text=draft
-					text=assign(text,"header",load("header#{d}.html"))
-					text=assign(text,"alternate",`./alternate#{d}.php`)
-					text=assign(text,"embeds",load("embeds#{d}.html"))
-					text=assign(text,"viewController",vc)
-					source[n]=text
-				end
-			})}
-
-			run(pr1)
-			run(pr2)
+			if check(0) then
+				text=load("draft.html")
+				text=assign(text,"header",load("header.html"))
+				text=assign(text,"alternate",`./alternate.php`)
+				text=assign(text,"embeds",load("embeds.html"))
+				text=assign(text,"viewController",load("viewController.html"))
+				source=text
+			end
 		},
 		Proc.new{manifest=load("manifest.json")},
 		Proc.new{flower[0]=`./image.php 18 embed`},
@@ -170,33 +150,21 @@ def main
 			end
 		}
 	]
-	if $option[:online] then
+	if $option[:source] then
 		[
 			"style.css","styleX.css","styleT.css",
 			"script.js","scriptX.js","scriptT.js"
 		].each do |f|
 			add(f,"../../Resources/#{f}",true,true)
 		end
+		add("ServiceWorker.js","../../ServiceWorker.js",true,true)
 		add("/tmp/Color/silhouette.svg","../../Resources/silhouette.svg",false,true)
-	end
-	if $option[:offline] then
-		pr1.push(
-			Proc.new{offline[0]=load("offline.html")},
-			Proc.new{offline[1]=load("offlineX.css")},
-			Proc.new{offline[2]=load("offlineT.css")},
-			Proc.new{style[0]=load("style.css")},
-			Proc.new{style[1]=load("styleX.css")},
-			Proc.new{style[2]=load("styleT.css")},
-			Proc.new{script[0]=load("script.js")},
-			Proc.new{script[1]=load("scriptX.js")},
-			Proc.new{script[2]=load("scriptT.js")}
-		)
 	end
 
 	# assemble
 	pr2=[]
 	pr3=[]
-	fn=["index.html","offline.html","manifest.json"]
+	fn=["index.html","manifest.json"]
 	20.times do |un|
 		pr2.push(Proc.new{
 			c=cname(un)
@@ -212,29 +180,17 @@ def main
 				desc="A~S全色混交"
 			end
 			desc="Color #{c} (#{desc}) のサンプルです"
-			src=[source[0],source[1],manifest]
-			ss=""
-			if un<19 then
-				ss=":root{--hue:#{h};}"
-			end
-			3.times do |n|
+			src=[source,manifest]
+			2.times do |n|
 				if check(n) then
 					pr3.push(Proc.new{
 						s=src[n].gsub("$name","Color #{c}").gsub("$shortName",c).gsub("$color",x).gsub("$description",desc).gsub("$canonical","https://akimikimikimikimikimikimika.github.io/Color/Color-#{c}/")
-						if n<2 then
-							s=assign(s,"styleXSpecific",un<19 ? '<style type="text/css" id="specific">'+ss+"</style>\n" : "")
-							s=assign(s,"flower",flower[un<19?0:1])
-						end
 						if n==0 then
 							m=un<19 ? "X" : "T"
+							s=assign(s,"styleXSpecific",un<19 ? '<style type="text/css" id="specific">'+":root{--hue:#{h};}</style>\n" : "")
 							s=assign(s,"styleSpecific","../Resources/style#{m}.css")
 							s=assign(s,"scriptSpecific","../Resources/script#{m}.js")
-						elsif n==1 then
-							s=assign(s,"styleEmbedded",style[0]+"\n"+style[un<19?1:2]+"\n"+ss)
-							s=assign(s,"scriptEmbedded",script[0]+"\n"+script[un<19?1:2])
-							s=s.sub("$icon",`./Parser b ../../Color-#{c}/Icon.png`).sub("$apple-touch-icon",`./Parser b ../../Color-#{c}/mini.png`)
-							save("/tmp/Color/#{c}offline.html",s)
-							s=assign(offline[0],"offlineStyle",offline[un<19 ? 1 : 2]).gsub("$name","Color #{c}").gsub("$color",x).gsub("$hue",h).sub("$url",`./Parser #{$option[:compress] ? "bc" : "b"} /tmp/Color/#{c}offline.html`)
+							s=assign(s,"flower",flower[un<19?0:1])
 						end
 						save("/tmp/Color/"+c+fn[n],s)
 						add("/tmp/Color/"+c+fn[n],"../../Color-#{c}/"+fn[n],false,true)

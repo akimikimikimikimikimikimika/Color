@@ -20,8 +20,8 @@ Buildフォルダ内の Build.rb を使ってColorを組み立てる。
 それぞれの工程は,以下のコードをシェルに入力することで可能である。
 ```Shell
 Build/Build.rb # ページのビルド
-Build/Build.rb -no-online # オンライン版を出力しない
-Build/Build.rb -no-offline # オフライン版を出力しない
+Build/Build.rb -no-source # ページを出力しない (マニフェストファイルのみ)
+Build/Build.rb -no-manifest # マニフェストファイルを出力しない
 Build/Build.rb -no-compress # 圧縮しない
 
 Build/Build.rb -images # 画像リソースのビルド
