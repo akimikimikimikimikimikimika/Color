@@ -56,7 +56,7 @@ LightとDarkは背景色の値で表示している。
 |   S   |    `hsl(0,0%,50%)` |    `hsl(0,0%,90%)` |    `hsl(0,0%,15%)` |
 
 ### ビルド
-Colorのページを書き出すことができる。詳しくは- [Color こちら](https://github.com/akimikimikimikimikimikimika/Color/blob/master/Build/README.md "ビルド")。
+Colorのページを書き出すことができる。詳しくは- [こちら](https://github.com/akimikimikimikimikimikimika/Color/blob/master/Build/README.md "ビルド")。
 
 ### 特記事項
 - Internet Explorerでは利用できない。古いバージョンの Microsoft Edge でも動作しない。
