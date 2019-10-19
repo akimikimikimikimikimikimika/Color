@@ -8,18 +8,8 @@
 		-webkit-user-select:none;
 		-moz-user-select:none;
 	}
-	.js #pageViewController{
-		display:flex;
-		flex-flow:row nowrap;
-		overflow-x:scroll;
-		overflow-y:hidden;
-		-webkit-overflow-scrolling:touch;
-		scroll-snap-type:x mandatory;
-	}
 	.js .page{
 		position:relative;
-		flex:none;
-		scroll-snap-align:center;
 		width:100%;
 		height:100%;
 	}
@@ -33,25 +23,10 @@
 		stop-color:hsl(var(--hue),var(--lightness));
 		transition:stop-color 0.1s ease-in-out;
 	}
-
 	.petalDrop,.drops .pistil{
 		fill:hsl(var(--hue),var(--lightness));
 		transition:fill 0.1s ease-in-out;
 	}
-	.sepalColor000,.sepalColor100{stop-opacity:0.3;}
-	.pistilColor000,.petalColor025{--lightness:85%;}
-	.pistilColor100,.petalColor100,.drops .pistil,.petalDrop{--lightness:50%;}
-	.lighter>.pistilColor000,.lighter>.petalColor025{--lightness:91%;}
-	.lighter>.pistilColor100,.lighter>.petalColor100,.drops .lighter.pistil,.lighter.petalDrop{--lightness:70%;}
-	.sepalColor000{--lightness:74%;}
-	.sepalColor100{--lightness:26%;}
-	.vivid .pistilColor100,.vivid .petalColor100,.vivid.drops .pistil,.vivid .petalDrop{--lightness:100%;}
-	.vivid .lighter>.pistilColor000,.vivid .lighter>.petalColor025{--lightness:91%;}
-	.vivid .lighter>.pistilColor100,.vivid .lighter>.petalColor100,.vivid.drops .lighter.pistil,.vivid .lighter.petalDrop{--lightness:70%;}
-	.vivid .vividly>.pistilColor000,.vivid .vividly>.petalColor025{--lightness:85%;}
-	.vivid .vividly>.pistilColor100,.vivid .vividly>.petalColor100,.vivid.drops .vividly.pistil,.vivid .vividly.petalDrop{--lightness:50%;}
-	.vivid .sepalColor000{--lightness:95%;}
-	.vivid .sepalColor100{--lightness:100%;}
 	.colorSpace-background canvas{visibility:hidden;}
 	.flower .petalDrop,.drops .sepal,.drops .petal{
 		visibility:hidden;
@@ -132,7 +107,20 @@
 	#statusbar{z-index:2;}
 	#menuView{z-index:3;}
 	#menuButton{z-index:4;}
+	.js #pageViewController{
+		display:flex;
+		flex-flow:row nowrap;
+		overflow-x:scroll;
+		overflow-y:hidden;
+		-webkit-overflow-scrolling:touch;
+		scroll-snap-type:x mandatory;
+	}
+	.js .page{
+		flex:none;
+		scroll-snap-align:center;
+	}
 	.js #pageViewController::-webkit-scrollbar{height:5px;}
+	#pageViewController::-webkit-scrollbar-track,#pageViewController::-webkit-scrollbar-thumb{transition:background-color var(--CST);}
 	.standalone{
 		width:100vw;
 		height:100vh;
@@ -148,15 +136,27 @@
 	.js #pistil,.js .pistil,.js #petal,.js .petal,.js #petalDrop,.js .petalDrop{
 		cursor:var(--pointer-cursor);
 	}
+	.sepalColor000,.sepalColor100{stop-opacity:0.3;}
+	.pistilColor000,.petalColor025{--lightness:85%;}
+	.pistilColor100,.petalColor100,.drops .pistil,.petalDrop{--lightness:50%;}
+	.lighter>.pistilColor000,.lighter>.petalColor025{--lightness:91%;}
+	.lighter>.pistilColor100,.lighter>.petalColor100,.drops .lighter.pistil,.lighter.petalDrop{--lightness:70%;}
+	.sepalColor000{--lightness:74%;}
+	.sepalColor100{--lightness:26%;}
+	.vivid .pistilColor100,.vivid .petalColor100,.vivid.drops .pistil,.vivid .petalDrop{--lightness:100%;}
+	.vivid .lighter>.pistilColor000,.vivid .lighter>.petalColor025{--lightness:91%;}
+	.vivid .lighter>.pistilColor100,.vivid .lighter>.petalColor100,.vivid.drops .lighter.pistil,.vivid .lighter.petalDrop{--lightness:70%;}
+	.vivid .vividly>.pistilColor000,.vivid .vividly>.petalColor025{--lightness:85%;}
+	.vivid .vividly>.pistilColor100,.vivid .vividly>.petalColor100,.vivid.drops .vividly.pistil,.vivid .vividly.petalDrop{--lightness:50%;}
+	.vivid .sepalColor000{--lightness:95%;}
+	.vivid .sepalColor100{--lightness:100%;}
 	#flower-bg{
 		opacity:0;
 		transition:opacity var(--CST);
 		position:absolute;
 		z-index:1;
 	}
-	.vivid #flower-bg{
-		opacity:1;
-	}
+	.vivid #flower-bg{opacity:1;}
 	.desc{
 		transition:transform 0.5s ease-in-out,color var(--CST),background-color var(--CST);
 		font-size:24px;
@@ -261,16 +261,28 @@
 	.menu-shown #menuView>div{transform:translateX(0px);}
 }
 @media print {
+	html{
+		width:100vw;
+		height:100vh;
+	}
+	body{margin:0px;}
 	body,#pageViewController,#textarea-series{
 		position:relative;
 		width:100%;
 		height:100%;
+	}
+	.page{
+		page-break-inside:avoid;
 	}
 	svg,canvas{
 		color-adjust:exact;
 		-webkit-print-color-adjust:exact;
 	}
 	.desc,#inputView,#menuView,#menuButton{visibility:hidden;}
+	.pistilColor000,.petalColor025{--lightness:85%;}
+	.pistilColor100,.petalColor100,.petalDrop,.drops .pistil{--lightness:50%;}
+	.sepalColor000{--lightness:97.4%;}
+	.sepalColor100{--lightness:92.6%;}
 }
 @media screen {
 	.light #statusbar,.dark.colorSpace-page #statusbar,.vivid.flower-page #statusbar{background-color:var(--statusbar);}

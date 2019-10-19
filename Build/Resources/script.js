@@ -7,7 +7,7 @@ window.main=pkg=>{
 		sa(e,"id",id);
 		if (text) e.textContent=text;
 		return e;
-	},ap=(p,c)=>p.appendChild(c),ib=(a,c)=>a.parentNode.insertBefore(c,a),rep=(n,o)=>o.parentNode.replaceChild(n,o),rc=e=>e.parentNode.removeChild(e),cn=e=>e.cloneNode(true),ga=(e,k)=>e.getAttribute(k),sa=(e,k,v)=>{
+	},ap=(p,c)=>p.appendChild(c),rc=e=>e.parentNode.removeChild(e),cn=e=>e.cloneNode(true),ga=(e,k)=>e.getAttribute(k),sa=(e,k,v)=>{
 		if (v) e.setAttribute(k,v);
 		else e.removeAttribute(k);
 		return e;
@@ -29,35 +29,44 @@ window.main=pkg=>{
 			return t+s;
 		},"#");
 	};
-	let newton=(()=>{
-		let calc=(x,a)=>{
-			var v=0;
-			for (var n=0;n<a.length;n++) v+=a[n]*(x**n);
-			return v;
-		};
-		let approx=(x,a)=>{
-			let f0=a.reverse();
-			let f1=f0.map((v,i)=>v*i);
-			f1.shift();
-			var c=x,p;
-			do {
-				p=c;
-				let p0=calc(p,f0),p1=calc(p,f1);
-				if (p0==0) return p;
-				else if (p1==0) return null;
-				else c=p-(p0**2)/(p1*(p0-calc(p-p0/p1,f0)));
-				if (Math.abs(c)==Infinity) return p;
-			} while (Math.abs(p-c)>=1e-16);
-			return c;
-		};
-		return (x,...args)=>{
-			let v=approx(x,args);
-			if (isNaN(v)||(!isFinite(v))) {
-				console.log(x);
-				console.log(args);
+	let solveThree=(()=>{
+		let SQRT3=Math.sqrt(3);
+		let two=(a,b,c)=>{
+			let v1=-b/(2*a);
+			let v2=(b**2)/(4*a**2)-c/a;
+			if (v2>0) {
+				let r=Math.sqrt(v2);
+				return [{x:v1+r,y:0},{x:v1-r,y:0}];
 			}
-			return v;
+			if (v2<0) {
+				let r=Math.sqrt(-v2);
+				return [{x:v1,y:+r},{x:v1,y:-r}];
+			}
+			if (v2==0) return [{x:v1,y:0}];
 		};
+		let three=(a,b,c,d)=>{
+			let nb=b/a,nc=c/a,nd=d/a;
+			var l=two(1,2*nb**3-9*nb*nc+27*nd,(nb**2-3*nc)**3);
+			if (l[0].y==0) {
+				l=[l[0],l[1]?l[1]:l[0]];
+				l=l.map(v=>Math.cbrt(v.x));
+				return [
+					{x:(-nb+l[0]+l[1])/3,y:0},
+					{x:(-nb*2-l[0]-l[1])/6,y:(l[0]-l[1])*SQRT3/6},
+					{x:(-nb*2-l[0]-l[1])/6,y:(l[1]-l[0])*SQRT3/6}
+				];
+			}
+			else {
+				let r=Math.cbrt(Math.hypot(l[0].y,l[0].x)),t=Math.atan2(l[0].y,l[0].x)/3;
+				let x=r*Math.cos(t),y=r*Math.sin(t);
+				return [
+					{x:(-nb+x*2)/3,y:0},
+					{x:(-nb-x-SQRT3*y)/3,y:0},
+					{x:(-nb-x+SQRT3*y)/3,y:0}
+				];
+			}
+		};
+		return (a,b,c,d)=>three(a,b,c,d).filter(v=>v.y==0).map(v=>v.x);
 	})();
 
 	let cs=(()=>{
@@ -145,7 +154,9 @@ window.main=pkg=>{
 		standalone:false
 	});
 
-	if (status.online) try{navigator.serviceWorker.register("../ServiceWorker.js");}catch(e){}
+	if (status.online) try{
+		["../../Library/ServiceWorker.js","../ServiceWorker.js"].forEach(f=>navigator.serviceWorker.register(f).then(r=>r.update()));
+	}catch(e){}
 
 	let base=document.createDocumentFragment();
 	ap(base,cd(null,"statusbar"));
@@ -292,7 +303,13 @@ window.main=pkg=>{
 			ease:(()=>{
 				let a=0.42;
 				let b=1-3*a;
-				return x=>newton(0.5,2*(b**3),9*a*(b**2)-6*(b**2)*x,6*b*x**2-18*a*b*x-27*(a**3),9*a*(x**2)-2*(x**3));
+				var p=0;
+				return x=>{
+					let s=solveThree(2*(b**3),9*a*(b**2)-6*(b**2)*x,6*b*x**2-18*a*b*x-27*(a**3),9*a*(x**2)-2*(x**3));
+					let c=s.find(v=>(v>=0)||(v<=1));
+					if (c!=undefined) {p=c;return c;}
+					else return p;
+				};
 			})(),
 			enter:o=>{
 				o.focused.forEach(f=>f());
@@ -525,10 +542,10 @@ window.main=pkg=>{
 				let p=ap(a,cd(null,"textarea-series"));
 				o.list=p;
 				o.artifact=a;
-				["normal","stroke","shadow"].forEach(c=>{
+				["normal","stroke","shadow"].forEach((c,i)=>{
 					let ct=cd();
 					let t=ce("textarea");
-					t.value="TEXT";
+					t.value=(["NORMAL TEXT","STROKE TEXT","SHADOWED TEXT"])[i];
 					ael(t,"focus",()=>o.focused=t);
 					ael(t,"blur",()=>{if (o.focused==t) o.focused=null;});
 					o.areas.push(t);
