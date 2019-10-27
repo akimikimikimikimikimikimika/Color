@@ -1,7 +1,9 @@
+@import url(font.css);
+
 :root{--CST:0.3s ease-in-out;}
 @media all {
 	*{
-		font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+		font-family:standard;
 		font-weight:200;
 		cursor:var(--default-cursor);
 		user-select:none;
@@ -27,17 +29,12 @@
 		fill:hsl(var(--hue),var(--lightness));
 		transition:fill 0.1s ease-in-out;
 	}
-	.colorSpace-background canvas{visibility:hidden;}
+	.colorSpace-background .colorSpace>canvas{visibility:hidden;}
 	.flower .petalDrop,.drops .sepal,.drops .petal{
 		visibility:hidden;
 	}
-	#textarea-series{
+	.page.textField{
 		display:flex;
-		flex-direction:column;
-	}
-	#textarea-series>div{
-		display:flex;
-		flex:1;
 		align-items:center;
 		justify-content:center;
 	}
@@ -58,10 +55,11 @@
 		width:calc( 100% - 50px );
 		height:calc( 100% - 30px );
 		font-size:50px;
+		text-align:justify;
 		user-select:text;
 		transition-duration:0.3s;
 		transition-timing-function:ease-in-out;
-		transition-property:color,border-color,caret-color;
+		transition-property:-webkit-text-stroke-color,text-stroke-color,text-stroke-width,-webkit-text-stroke-width,text-shadow,color,border-color,caret-color;
 		user-select:text;
 		-webkit-user-select:text;
 		-moz-user-select:text;
@@ -87,12 +85,12 @@
 		-webkit-text-stroke-color:var(--text);
 		text-stroke-width:2px;
 		-webkit-text-stroke-width:2px;
-		transition-property:-webkit-text-stroke-color,text-stroke-color,color,border-color,caret-color;
 	}
 	textarea.shadow{
 		text-shadow:1px 1px 2px var(--text),-1px 1px 2px var(--text),1px -1px 2px var(--text),-1px -1px 2px var(--text),0 0 0.1em var(--text);
-		transition-property:text-shadow,color,border-color,caret-color;
 	}
+	textarea.serif{font-family:roman;}
+	textarea.mono{font-family:mono;}
 	@media screen{textarea.shadow{color:var(--bg);}}
 }
 @media screen {
@@ -178,6 +176,7 @@
 		top:calc( 10px + env(safe-area-inset-top) );
 	}
 	.desc.lower{
+		font-family:mono;
 		--width:160px;
 		bottom:10px;
 		bottom:calc( 10px + env(safe-area-inset-bottom) );

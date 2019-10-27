@@ -152,8 +152,8 @@ def main
 	]
 	if $option[:source] then
 		[
-			"style.css","styleX.css","styleT.css",
-			"script.js","scriptX.js","scriptT.js"
+			"style.css","styleX.css","styleT.css","font.css",
+			"script.js","scriptX.js","scriptT.js","flower.js","colorSpace.js","textField.js","motions.js"
 		].each do |f|
 			add(f,"../../Resources/#{f}",true,true)
 		end

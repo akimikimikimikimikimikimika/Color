@@ -1,4 +1,4 @@
-window.main({
+window.res("specific",{
 	map:[
 		{
 			name:"HSL",

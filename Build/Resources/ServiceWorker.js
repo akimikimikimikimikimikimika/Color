@@ -2,25 +2,29 @@ importScripts("../Library/SW/SW.js");
 
 let ael=(t,f)=>self.addEventListener(t,f);
 
-let build=[2019,10,19];
-
 let cacheInfo=[
 	{
 		name:"Color",
-		build:build,
+		build:[2019,10,27],
 		list:[
 			"ServiceWorker.js",
 			"style.css",
 			"styleX.css",
 			"styleT.css",
+			"font.css",
 			"script.js",
 			"scriptX.js",
 			"scriptT.js",
+			"flower.js",
+			"colorSpace.js",
+			"textField.js",
+			"motions.js",
 			"silhouette.svg"
 		].map((v,i)=>(i?"Resources/":"")+v)
 	}
 ];
 
+let build=[2019,10,19];
 for (var un=0;un<20;un++) {
 	let c=(un+10).toString(36).toUpperCase();
 	cacheInfo.splice(un,0,{

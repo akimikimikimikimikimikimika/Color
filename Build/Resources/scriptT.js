@@ -1,4 +1,4 @@
-window.main({
+window.res("specific",{
 	map:(()=>{
 		let f=(p,un,rect)=>{
 			let x = p.x*2-1;
@@ -69,10 +69,5 @@ window.main({
 				}
 			}
 		`;
-	})(),
-	editorColor:o=>{
-		let f=()=>Math.random()*360+"deg,80%";
-		o.list.setAttribute("style",`--bg-hue:${f()};`);
-		o.areas.forEach(a=>a.setAttribute("style",`--text-hue:${f()};--selection-hue:${f()};--border-hue:${f()};`));
-	}
+	})()
 });
