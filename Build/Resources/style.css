@@ -52,6 +52,10 @@
 		caret-color:var(--caret);
 		resize:none;
 		padding:10px;
+		padding-left:calc( 10px + env(safe-area-inset-left) );
+		padding-right:calc( 10px + env(safe-area-inset-right) );
+		padding-top:calc( 10px + env(safe-area-inset-top) );
+		padding-bottom:calc( 10px + env(safe-area-inset-bottom) );
 		width:calc( 100% - 50px );
 		height:calc( 100% - 30px );
 		font-size:50px;
@@ -64,6 +68,7 @@
 		-webkit-user-select:text;
 		-moz-user-select:text;
 		cursor:text;
+		-webkit-overflow-scrolling:touch;
 	}
 	textarea::selection{
 		background-color:var(--selection);
