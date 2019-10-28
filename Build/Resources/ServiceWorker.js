@@ -19,7 +19,7 @@ let cacheInfo=[
 			"textField.js",
 			"motions.js",
 			"silhouette.svg"
-		].map((v,i)=>(i?"Resources/":"")+v)
+		].map(v=>"Resources/"+v)
 	}
 ];
 
