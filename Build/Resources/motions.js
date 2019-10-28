@@ -392,7 +392,7 @@
 
 		let o={
 			artifact:null,
-			setup:o=>{
+			setup:()=>{
 				let p=cd("page");
 				c=ce("canvas");
 				ap(p,c);
