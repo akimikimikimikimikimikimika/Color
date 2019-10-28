@@ -5,7 +5,7 @@ let ael=(t,f)=>self.addEventListener(t,f);
 let cacheInfo=[
 	{
 		name:"Color",
-		build:[2019,10,28],
+		build:[2019,10,29],
 		list:[
 			"style.css",
 			"styleX.css",
